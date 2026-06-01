@@ -1,5 +1,3 @@
-#include <type_traits>
-
 template <typename T>
 T floor_div(T n, T d) {
   static_assert(is_integral<T>::value and is_signed<T>::value,
