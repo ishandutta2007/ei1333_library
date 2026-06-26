@@ -7,6 +7,8 @@ struct SquareMatrix {
 
   SquareMatrix() : A{{}} {}
 
+  SquareMatrix(const array<array<T, N>, N>& A) : A(A) {}
+
   size_t size() const { return N; }
 
   inline const array<T, N>& operator[](int k) const { return (A.at(k)); }

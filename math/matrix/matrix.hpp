@@ -4,6 +4,8 @@ struct Matrix {
 
   Matrix() {}
 
+  Matrix(const vector<vector<T> >& A) : A(A) {}
+
   Matrix(size_t n, size_t m) : A(n, vector<T>(m, 0)) {}
 
   Matrix(size_t n) : A(n, vector<T>(n, 0)) {};
