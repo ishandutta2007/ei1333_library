@@ -24,7 +24,8 @@ int main() {
       for(int i = 0; i < N; i++) {
         flow.add_edge(M + i, T, low, high);
       }
-      return flow.max_flow(S, T) == M;
+      auto result = flow.max_flow(S, T);
+      return result && *result == M;
     };
 
     int p = 0, q = N;
