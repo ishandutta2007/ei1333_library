@@ -2,7 +2,7 @@ template <typename flow_t, template <typename> class F>
 struct MaxFlowLowerBound {
   F<flow_t> flow;
   vector<flow_t> in, up;
-  typename F<flow_t>::edge *latte, *malta;
+  int ts_edge, st_edge;
   int X, Y, V;
   flow_t sum;
 
@@ -30,8 +30,8 @@ struct MaxFlowLowerBound {
   bool can_flow(int s, int t) {
     assert(s != t);
     flow.add_edge(t, s, flow.INF);
-    latte = &flow.graph[t].back();
-    malta = &flow.graph[s].back();
+    ts_edge = (int)flow.graph[t].size() - 1;
+    st_edge = (int)flow.graph[s].size() - 1;
     return can_flow();
   }
 
@@ -41,21 +41,21 @@ struct MaxFlowLowerBound {
     return ret >= sum;
   }
 
-  flow_t max_flow(int s, int t) {
+  optional<flow_t> max_flow(int s, int t) {
     if (can_flow(s, t)) {
       return flow.max_flow(s, t);
     } else {
-      return -1;
+      return nullopt;
     }
   }
 
-  flow_t min_flow(int s, int t) {
+  optional<flow_t> min_flow(int s, int t) {
     if (can_flow(s, t)) {
-      auto ret = flow.INF - latte->cap;
-      latte->cap = malta->cap = 0;
+      auto ret = flow.INF - flow.graph[t][ts_edge].cap;
+      flow.graph[t][ts_edge].cap = flow.graph[s][st_edge].cap = 0;
       return ret - flow.max_flow(t, s);
     } else {
-      return -1;
+      return nullopt;
     }
   }
 
