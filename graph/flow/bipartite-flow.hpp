@@ -56,21 +56,19 @@ struct BipartiteFlow {
 
   /* http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=0334 */
   vector<pair<int, int> > lex_max_matching() {
-    if (!matched) max_matching();
-    for (auto& vs : g) sort(begin(vs), end(vs));
-    vector<pair<int, int> > es;
+    int matching_size = (int)max_matching().size();
+    int dummy_size = (int)n - matching_size;
+    BipartiteFlow aux(n, m + dummy_size);
     for (int i = 0; i < (int)n; i++) {
-      if (match_l[i] == -1 || alive[i] == 0) {
-        continue;
-      }
-      match_r[match_l[i]] = -1;
-      match_l[i] = -1;
-      ++time_stamp;
-      find_augment_path(i);
-      alive[i] = 0;
-      es.emplace_back(i, match_l[i]);
+      for (auto& j : g[i]) aux.add_edge(i, j);
+      for (int j = 0; j < dummy_size; j++) aux.add_edge(i, m + j);
     }
-    return es;
+    auto es = aux.lex_left_perfect_matching();
+    vector<pair<int, int> > ret;
+    for (auto& [a, b] : es) {
+      if (b < (int)m) ret.emplace_back(a, b);
+    }
+    return ret;
   }
 
   vector<int> min_vertex_cover() {
@@ -201,6 +199,22 @@ struct BipartiteFlow {
   }
 
  private:
+  vector<pair<int, int> > lex_left_perfect_matching() {
+    auto es = max_matching();
+    assert(es.size() == n);
+    for (auto& vs : g) sort(begin(vs), end(vs));
+    es.clear();
+    for (int i = 0; i < (int)n; i++) {
+      match_r[match_l[i]] = -1;
+      match_l[i] = -1;
+      ++time_stamp;
+      find_augment_path(i);
+      alive[i] = 0;
+      es.emplace_back(i, match_l[i]);
+    }
+    return es;
+  }
+
   vector<int> find_residual_path() {
     auto res = build_risidual_graph();
     queue<int> que;
