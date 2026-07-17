@@ -3,7 +3,7 @@ title: Binomial Coefficient Prefix Sum
 documentation_of: //math/fps/binomial-prefix-sum.hpp
 ---
 
-多数の二項係数の前綴和を一括で求めます。
+多数の二項係数の Prefix Sum を一括で求めます。
 
 # binomial_prefix_sum
 
@@ -35,10 +35,7 @@ $$
 
 $Q=\lvert \mathrm{xs}\rvert$、$M=1+\max_i m_i$ とします。`FormalPowerSeriesFriendlyNTT` を用いた場合、
 
-- 時間計算量: $O((Q+M)\log^2(Q+M))$
-- 空間計算量: $O((Q+M)\log(Q+M))$
-
-$Q=0$ の場合は $O(1)$ です。
+- $O((Q+M)\log^2(Q+M))$
 
 # 参考
 
