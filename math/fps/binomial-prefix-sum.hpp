@@ -6,8 +6,7 @@
  * @brief Binomial Coefficient Prefix Sum
  */
 template <template <typename> class FPS, typename Mint>
-vector<Mint> binomial_prefix_sum(const FPS<Mint>& xs,
-                                 const vector<int>& ms) {
+vector<Mint> binomial_prefix_sum(const FPS<Mint>& xs, const vector<int>& ms) {
   assert(xs.size() == ms.size());
   const int q = (int)xs.size();
   if (q == 0) return {};
@@ -67,8 +66,7 @@ vector<Mint> binomial_prefix_sum(const FPS<Mint>& xs,
                        const FPS<Mint>& rev_inv) {
     if (f.size() < mod.size()) return f;
     int n = (int)f.size() - (int)mod.size() + 1;
-    auto quotient =
-        (f.rev().pre(n) * rev_inv.pre(n)).pre(n).rev(n);
+    auto quotient = (f.rev().pre(n) * rev_inv.pre(n)).pre(n).rev(n);
     f -= quotient * mod;
     f.resize(mod.size() - 1);
     f.shrink();
@@ -110,8 +108,8 @@ vector<Mint> binomial_prefix_sum(const FPS<Mint>& xs,
       auto reduced_term = remainder(term, mod, rev_inv);
       auto reduced_a = remainder(a[k << 1], mod, rev_inv);
       auto reduced_b = remainder(b[k << 1], mod, rev_inv);
-      auto next_sum = reduced_sum +
-                      remainder(reduced_term * reduced_b, mod, rev_inv);
+      auto next_sum =
+          reduced_sum + remainder(reduced_term * reduced_b, mod, rev_inv);
       auto next_term = remainder(reduced_term * reduced_a, mod, rev_inv);
       self(self, k << 1 | 1, mid, r, next_sum, next_term);
     }
